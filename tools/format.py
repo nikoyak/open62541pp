@@ -1,3 +1,4 @@
+from argparse import ArgumentParser
 from pathlib import Path
 from subprocess import check_call
 
@@ -12,11 +13,19 @@ PATTERNS = ("**/*.cpp", "**/*.h", "**/*.hpp")
 
 
 def main():
-    for dir_path in DIRS:
-        for pattern in PATTERNS:
-            for file_path in dir_path.glob(pattern):
-                print(file_path.resolve())
-                check_call(("clang-format", "-i", str(file_path)))
+    parser = ArgumentParser()
+    parser.add_argument("--check", action="store_true")
+    args = parser.parse_args()
+
+    files = [
+        file_path
+        for dir_path in DIRS
+        for pattern in PATTERNS
+        for file_path in dir_path.glob(pattern)
+    ]
+
+    clang_format_options = ("--dry-run", "--Werror") if args.check else ("-i",)
+    check_call(("clang-format", *clang_format_options, *(str(file) for file in files)))
 
 
 if __name__ == "__main__":
