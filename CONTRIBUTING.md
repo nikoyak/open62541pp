@@ -52,5 +52,13 @@ pre-commit run --all-files
 
 ## Code style
 
-Please use both and `clang-tidy` and `clang-format` during development.
-The provided configs `.clang-tidy` and `.clang-format` will enforce modern C++, best practises and uniform formatting.
+Please use both `clang-tidy` and `clang-format` during development.
+The provided configs `.clang-tidy` and `.clang-format` will enforce modern C++, best practices and uniform formatting.
+
+The project uses `clang-format` 18.1.3. Please make sure this exact version is used for formatting.
+
+You can either provide `clang-format` 18.1.3 in your PATH, or download a local copy:
+
+`python tools/download-clang-format.py`
+
+The downloaded formatter is stored in `.tools/` and is used automatically by `tools/format.py`.
